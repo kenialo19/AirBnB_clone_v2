@@ -124,32 +124,47 @@ class HBNBCommand(cmd.Cmd):
             except:
                 return value
 
+    def cast(self, value):
+        """"""
+        try:
+            v = int(value)
+            return v
+        except:
+            try:
+                v = float(value)
+                return v
+            except:
+                return value
+
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        new = args.split(" ")
-        if new[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
         else:
-            if len(new) == 1:
-                new_instance = HBNBCommand.classes[new[0]]()
+            new = args.split()
+            new = args.split(" ")
+            if new[0] in HBNBCommand.classes and len(new) == 1:
+                new_instance = eval(str(args) + "()")
+                storage.save()
                 new_instance.save()
                 print(new_instance.id)
-            elif len(new) > 1:
-                new_instance = HBNBCommand.classes[new[0]]()
-                dict_attr = {}
-                for j in new[1:]:
-                    n = j.split("=")
-                    dict_attr[n[0]] = n[1]
+            elif new[0] in HBNBCommand.classes and len(new) > 1:
+                new_instance = eval(str(new[0]) + "()")
+                dict_attr = dict(j.split("=") for j in new[1:])
                 for key, value in dict_attr.items():
-                    value = value.replace('_', ' ')
-                    value = value.strip("\"'")
-                    value = self.my_cast(value)
-                    setattr(new_instance, key, value)
+                    if '_' in value:
+                        value = value.replace('_', ' ')
+                    value = self.cast(value)
+                    if type(value) is str:
+                        value = value.strip('"')
+                    if hasattr(new_instance, key):
+                        setattr(new_instance, key, value)
+                storage.save()
                 new_instance.save()
                 print(new_instance.id)
+            else:
+                print("** class doesn't exist **")
 
     def help_create(self):
         """ Help information for the create method """

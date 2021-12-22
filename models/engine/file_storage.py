@@ -14,11 +14,13 @@ class FileStorage:
         if cls is None:
             return self.__objects
         else:
+            if type(cls) == str:
+                cls = eval(cls)
             new_list = {}
-            for obj, value in FileStorage.__objects.items():
-                if cls.__name__ == value.__class__.__name__:
-                    new_list[obj] = FileStorage.__objects[obj]
-            return new_list
+        for obj, value in self.__objects.items():
+            if type(value) == cls:
+                new_list[obj] = value
+        return new_list
 
     def new(self, obj):
         """Adds new object to storage dictionary"""

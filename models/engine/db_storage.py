@@ -37,19 +37,18 @@ class DBStorage():
     def all(self, cls=None):
         """this method return a dictionary of
         all objects depending of the class name"""
-        my_dict = {}
         if cls is None:
-            for i in classList:
-                objs = self.__session.query(classList[i]).all()
-                for obj in objs:
-                    key = obj.__class__.__name__ + '.' + obj.id
-                    my_dict[key] = obj
-        elif cls in classList:
-            objs = self.__session.query(classList[cls]).all()
-            for obj in objs:
-                key = obj.__class__.__name__ + '.' + obj.id
-                my_dict[key] = obj
-        return my_dict
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Amenity).all())
+            objs.extend(self.__session.query(Review).all())
+        else:
+            if type(cls) == str:
+                cls = eval(cls)
+            objs = self.__session.query(cls)
+        return {"{}.{}".format(type(i).__name__, i.id): i for i in objs}
 
     def new(self, obj):
         """add the object to the current dtabase session"""

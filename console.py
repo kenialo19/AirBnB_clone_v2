@@ -4,7 +4,7 @@ import cmd
 import sys
 import shlex
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -114,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def cast(self, value):
+    """def cast(self, value):
         """"""
         try:
             v = int(value)
@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
                 v = float(value)
                 return v
             except:
-                return value
+                return value"""
 
     def do_create(self, args):
         """ Create an object of any class"""
@@ -143,9 +143,6 @@ class HBNBCommand(cmd.Cmd):
                 for key, value in dict_attr.items():
                     if '_' in value:
                         value = value.replace('_', ' ')
-                    value = self.cast(value)
-                    if type(value) is str:
-                        value = value.strip('"')
                     if hasattr(new_instance, key):
                         setattr(new_instance, key, value)
                 new_instance.save()
@@ -227,7 +224,7 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-        my_dict = storage.all()
+        my_dict = storage.all(args)
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:

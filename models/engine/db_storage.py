@@ -14,7 +14,9 @@ from models.user import User
 classList = {"BaseModel": BaseModel, "Amenity": Amenity, "City": City,
              "Place": Place, "Review": Review, "State": State, "User": User}
 
+
 class DBStorage():
+    """"""
     __engine = None
     __session = None
 
@@ -26,27 +28,33 @@ class DBStorage():
         database = getenv('HBNB_MYSQL_DB')
 
         self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'.format(user, password, host, database), pool_pre_ping=True)
+            'mysql+mysqldb://{}:{}@{}/{}'
+            .format(user, password, host, database), pool_pre_ping=True)
 
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
-    
+
     def all(self, cls=None):
-        """this method return a dictionary of 
+        """this method return a dictionary of
         all objects depending of the class name"""
         my_dict = {}
-        for i in classList:
-            if cls is None or cls is classList[i] or cls is i:
+        if cls is None:
+            for i in classList:
                 objs = self.__session.query(classList[i]).all()
                 for obj in objs:
                     key = obj.__class__.__name__ + '.' + obj.id
                     my_dict[key] = obj
+        elif cls in classList:
+            objs = self.__session.query(classList[cls]).all()
+            for obj in objs:
+                key = obj.__class__.__name__ + '.' + obj.id
+                my_dict[key] = obj
         return my_dict
-    
+
     def new(self, obj):
         """add the object to the current dtabase session"""
         self.__session.add(obj)
-    
+
     def save(self):
         """"""""
         self.__session.commit()
@@ -59,7 +67,6 @@ class DBStorage():
     def reload(self):
         """"""""
         Base.metadata.create_all(self.__engine)
-        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        session = scoped_session(Session)
+        session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(session)
         self.__session = Session()
-    

@@ -113,19 +113,8 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def my_cast(self, value):
-        try:
-            v = int(value)
-            return v
-        except:
-            try:
-                v = float(value)
-                return v
-            except:
-                return value
-
     def cast(self, value):
-        """"""
+        """cast string, to float or to int"""
         try:
             v = int(value)
             return v
@@ -142,7 +131,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         else:
-            new = args.split()
             new = args.split(" ")
             if new[0] in HBNBCommand.classes and len(new) == 1:
                 new_instance = eval(str(args) + "()")

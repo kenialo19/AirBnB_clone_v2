@@ -131,29 +131,23 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
+        new = args.split(" ")
+        if new[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
         else:
-            new = args.split(" ")
-            if new[0] in HBNBCommand.classes and len(new) == 1:
-                new_instance = eval(str(args) + "()")
-                storage.save()
-                new_instance.save()
-                print(new_instance.id)
-            elif new[0] in HBNBCommand.classes and len(new) > 1:
-                new_instance = eval(str(new[0]) + "()")
-                dict_attr = dict(j.split("=") for j in new[1:])
-                for key, value in dict_attr.items():
-                    if '_' in value:
-                        value = value.replace('_', ' ')
-                    value = self.cast(value)
-                    if type(value) is str:
-                        value = value.strip('"')
-                    if hasattr(new_instance, key):
-                        setattr(new_instance, key, value)
-                storage.save()
-                new_instance.save()
-                print(new_instance.id)
-            else:
-                print("** class doesn't exist **")
+            attr = {}
+            for j in new[1:]:
+                n = j.split("=")
+                attr[n[0]] = n[1]
+            new_instance = HBNBCommand.classes[new[0]]()
+            for key, value in attr.items():
+                value = value.replace('_', ' ')
+                value = value.strip("\"'")
+                value = self.my_cast(value)
+                setattr(new_instance, key, value)
+            new_instance.save()
+            print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -258,7 +252,7 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def help_count(self):
-        """ """
+        """method count"""
         print("Usage: count <class_name>")
 
     def do_update(self, args):

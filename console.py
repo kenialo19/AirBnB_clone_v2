@@ -119,11 +119,12 @@ class HBNBCommand(cmd.Cmd):
             v = int(value)
             return v
         except:
-            try:
-                v = float(value)
-                return v
-            except:
-                return value
+            pass
+        try:
+            v = float(value)
+            return v
+        except:
+            return value
 
     def do_create(self, args):
         """ Create an object of any class"""

@@ -144,7 +144,7 @@ class HBNBCommand(cmd.Cmd):
             for key, value in attr.items():
                 value = value.replace('_', ' ')
                 value = value.strip("\"'")
-                value = self.my_cast(value)
+                value = self.cast(value)
                 setattr(new_instance, key, value)
             new_instance.save()
             print(new_instance.id)

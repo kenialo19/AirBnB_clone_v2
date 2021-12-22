@@ -114,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    """def cast(self, value):
+    def cast(self, value):
         """"""
         try:
             v = int(value)
@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
                 v = float(value)
                 return v
             except:
-                return value"""
+                return value
 
     def do_create(self, args):
         """ Create an object of any class"""

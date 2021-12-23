@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """This is the place class"""
 from sqlalchemy import String, DateTime
 from sqlalchemy import Column, ForeignKey, Integer

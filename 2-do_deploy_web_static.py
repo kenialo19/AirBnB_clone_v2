@@ -22,22 +22,19 @@ def do_pack():
 
 def do_deploy(archive_path):
     """ Deploy the file in specific folders in the servers """
-    if path.isfile(archive_path) is False:
-        return False
-    filetgz = archive_path.split("/")[-1]
-    filename = filetgz.replace('.tgz', '')
-
-    newdir = "/data/web_static/releases/" + filename
-
+  
     try:
+        newdir = "/data/web_static/releases/"
+        filetgz = archive_path.split("/")[-1]
+        filename = filetgz.replace('.tgz', '')
         put(archive_path, "/tmp/")
-        run("mkdir {}/".format(newdir))
+        run("mkdir {}/".format(newdir, filename))
         run("tar -xzf /tmp/{} -C {}/".format(filetgz, newdir))
         run("rm /tmp/{}".format(filetgz))
-        run("mv {}/web_static/* {}/".format(newdir, newdir))
-        run("rm -rf {}/web_static".format(newdir))
+        run("mv {}/web_static/* {}/".format(newdir, filename, newdir, filename))
+        run("rm -rf {}/web_static".format(newdir, filename))
         run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(newdir))
+        run("ln -s {} /data/web_static/current".format(newdir, filename))
         return True
     except:
         return False

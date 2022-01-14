@@ -20,13 +20,13 @@ def do_deploy(archive_path):
 
     try:
         put(archive_path, "/tmp/")
-        run("sudo mkdir {}/".format(newdir))
-        run("sudo tar -xzf /tmp/{} -C {}/".format(filetgz, newdir))
-        run("sudo rm /tmp/{}".format(filetgz))
-        run("sudo mv {}/web_static/* {}/".format(newdir, newdir))
-        run("sudo rm -rf {}/web_static".format(newdir))
-        run("sudo rm -rf /data/web_static/current")
-        run("sudo ln -s {} /data/web_static/current".format(newdir))
+        run("mkdir {}/".format(newdir))
+        run("tar -xzf /tmp/{} -C {}/".format(filetgz, newdir))
+        run("rm /tmp/{}".format(filetgz))
+        run("mv {}/web_static/* {}/".format(newdir, newdir))
+        run("rm -rf {}/web_static".format(newdir))
+        run("rm -rf /data/web_static/current")
+        run("ln -s {} /data/web_static/current".format(newdir))
         print("New version deployed!")
         return True
     except:

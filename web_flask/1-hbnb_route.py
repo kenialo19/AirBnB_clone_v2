@@ -11,6 +11,7 @@ def hello():
     """Returns a string at the root route"""
     return "Hello HBNB!"
 
+
 @app.route("/hbnb", strict_slashes=False)
 def string():
     """Returns a string at the root route"""

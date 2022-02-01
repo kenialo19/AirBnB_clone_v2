@@ -32,6 +32,12 @@ def default(text):
     text_1 = text.replace('_', ' ')
     return "Python {}".format(text_1)
 
+@app.route("/number/<int:n>", strict_slashes=False)
+def is_number(n):
+    """ This function show the number only if <n>
+        is a number"""
+    return "{} is a number".format(n)
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

@@ -32,6 +32,7 @@ def default(text):
     text_1 = text.replace('_', ' ')
     return "Python {}".format(text_1)
 
+
 @app.route("/number/<int:n>", strict_slashes=False)
 def is_number(n):
     """ This function show the number only if <n>

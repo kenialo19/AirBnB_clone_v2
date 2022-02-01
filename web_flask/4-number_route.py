@@ -25,12 +25,12 @@ def show_text_cisfun(text):
     return "C {}".format(text_cisfun)
 
 
-@app.route("/python", strict_slashes=False)
-@app.route("/python/<text>", strict_slashes=False)
-def default(text="is cool"):
+@app.route('/python', defaults={'text': 'is cool'}, strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def default(text):
     """Python is cool!"""
-    text = text.replace('_', ' ')
-    return "Python {}".format(text)
+    text_1 = text.replace('_', ' ')
+    return "Python {}".format(text_1)
 
 
 if __name__ == "__main__":
